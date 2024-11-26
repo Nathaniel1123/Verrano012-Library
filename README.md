@@ -1,117 +1,248 @@
-# Library Management System with JWT
+## Library API Documentation
+ Welcome to the Library API! This API allows users to register, authenticate, manage authors, and books in a library system. The API uses secure authentication via JWT (JSON Web Tokens), ensuring that every request to modify or retrieve data is properly authenticated. After every action, a new JWT token is provided, which should be used for subsequent requests. This provides enhanced security and ensures that each operation is properly validated.
 
-A **Library Management System** that allows users to manage books, authors, and user authentication using **JSON Web Tokens (JWT)** for secure and stateless user sessions. This system provides endpoints for adding, removing, updating, and viewing books, as well as managing users and access control via JWT-based authentication.
+## Features:
+-  User Registration & Authentication: Users can register a new account and authenticate to obtain a token for further actions.
+-  Author Management: Create, read, update, and delete authors from the system.
+-  Book Management: Create, read, update, and delete books, while associating them with authors.
+-  Token-based Authentication: Each request requires a valid JWT token for authentication. After each action (such as creating or updating an author or book), a new token is issued.
 
-## Features
+## Register a New User 
+### ENDPOINT: (/user/register)
+Method: POST
 
-- **User Authentication**: Secure login and registration with JWT tokens.
-- **Book Management**: Add, update, delete, and retrieve books and authors.
-- **Role-Based Access**: Different levels of access for admins and regular users.
-- **RESTful API**: Standardized API endpoints for interacting with the system.
-- **JWT Authorization**: Protects endpoints using JWT for secure and stateless sessions.
-
-## Prerequisites
-
-Before getting started, ensure you have the following installed:
-
-- Node.js (version >= 14)
-- npm (Node Package Manager)
-- A relational database (e.g., MySQL, PostgreSQL, SQLite) or MongoDB for data storage
-
-## Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/library-management-system-jwt.git
-   
-2. Navigate to the project directory:
-   ```bash
-   cd library-management-system-jwt
-
-3. Install the required dependencies:
-   ```bash
-   npm install
-   
-4. Set up the environment variables: Create a .env file in the root of your project and add the following variables:
-   ```bash
-   JWT_SECRET=your-secret-key
-   DB_HOST=your-database-host
-   DB_USER=your-database-username
-   DB_PASSWORD=your-database-password
-   DB_NAME=your-database-name
-   PORT=3000
-
-5. Run the application:
-   ```bash
-   npm start
-  This will start the server on the specified port (default is 3000).
-
-## API Endpoints
-
-### Authentication
-
-- **POST /api/auth/register** - Register a new user (Admin or User)
-- **POST /api/auth/login** - Login and obtain JWT token
-  
-### Books Management (Admin Only)
-
-- **GET /api/books** - Get a list of all books
-- **POST /api/books** - Add a new book (Admin only)
-- **PUT /api/books/:id** - Update a book (Admin only)
-- **DELETE /api/books/:id** - Delete a book (Admin only)
-
-### Users Management (Admin Only)
-
-- **GET /api/users** - List all users (Admin only)
-- **GET /api/users/:id** - Get user details (Admin only)
-- **DELETE /api/users/:id** - Delete a user (Admin only)
-
-### Protected Routes (JWT Authentication)
-All routes except authentication require a valid JWT token in the Authorization header:
-  ```bash
-     Authorization: Bearer <your-jwt-token>
-  ```
-## Usage Example
-### Register a new user:
+Request Payload:
 ```bash
-POST /api/auth/register
-{
-  "username": "nathaniel_verrano",
-  "password": "dmmmsumluc"",
-  "role": "user"
+  {
+  "username": "your_username"  
+  "password": "your_password"   
 }
 ```
-### Login to get a JWT token:
-```
-POST /api/auth/login
+Response:
+```bash
 {
-  "username": "nathaniel_verrano",
-  "password": "dmmmsumluc"
+  "status": "success",
+  "data": null
 }
 ```
-### Accessing Protected Routes:
-After logging in, use the returned JWT token to access protected routes. For example, to get the list of books:
-```
-GET /api/books
-Authorization: Bearer <your-jwt-token>
-```
-### Add a new book (Admin Only):
-```
-POST /api/books
-Authorization: Bearer <admin-jwt-token>
-{
-  "title": "The CIT Krakens",
-  "author": "W. Nathaniel Verrano",
-  "isbn": "10101011111010101",
-  "published_date": "2024-11-24"
+
+## USER AUTHENTICATION
+### ENDPOINT: (/user/auth)
+Method: POST
+
+Request Payload:
+```bash
+  {
+  "username": "your_username"  
+  "password": "your_password"   
 }
 ```
-## Technologies Used
-- **Node.js**: Backend JavaScript runtime.
-- **Express**: Web framework for Node.js to handle HTTP requests.
-- **JWT (JSON Web Token)**: Stateless authentication system.
-- **MySQL/PostgreSQL/MongoDB**: Database system (depends on configuration).
-- **Sequelize (for SQL) / Mongoose (for MongoDB)**: ORM/ODM for interacting with the database.
+Response:
+```bash
+{
+  "status": "success",
+  "token": "jwt_token_here",
+  "data": null
+}
+```
+## Create a New Author 
+### ENDPOINT: (/user/author/create)
+Method: POST
+
+Request Payload:
+```bash
+ {
+  "name": "Nathaniel",
+  "token": "jwt_token_here"
+}
+
+```
+Response:
+```bash
+{
+  "status": "success",
+  "token": "new_jwt_token_here",
+  "data": null
+}
+```
+## Read All Authors
+### ENDPOINT: (/user/author/read)
+Method: GET
+
+Request Payload:
+```bash
+{
+  "token": "new_jwt_token_here",
+}
+```
+Response:
+```bash
+{
+  "status": "success",
+  "data": [
+    {
+      "id": 1,
+      "name": "George Orwell"
+    },
+    {
+      "id": 2,
+      "name": "J.K. Rowling"
+    }
+  ]
+}
+
+```
+
+### Update an Author 
+## Endpoint: (/user/author/update)
+## Method: PUT
+
+Request Payload:
+```bash
+{
+  "authorid": "1",  
+  "name": "Invictus",       
+  "token": "jwt_token_here"       
+}
+```
+
+Response:
+```bash
+{
+  "status": "success",
+  "token": "new_jwt_token_here",
+  "data": null
+}
+```
+
+### Delete Author
+## Endpoint: /user/author/delete
+
+## Method: DELETE
+
+## Description: Deletes an existing author. Token required for authentication.
+
+Request Payload:
+
+```bash
+{
+  "authorid": "integer",
+  "token": "your_jwt_token"
+}
+
+```
+Response:
+```bash
+{
+  "status": "success",
+  "token": "new_jwt_token_here",
+  "data": null
+}
+```
+### Create Book
+## Endpoint: /user/book/create
+
+## Method: POST
+
+## Description: Creates a new book and associates it with an author. Token required for authentication.
+
+## Request Payload:
+```bash
+{
+  "title": "THEBOOKOFWISDOM",
+  "authorid": "1",
+  "token": "your_jwt_token"
+}
+
+```
+## Response:
+```bash
+{
+  "status": "success",
+  "token": "new_jwt_token_here",
+  "data": null
+}
+```
+### Read All Books
+
+## Description: Retrieves all books in the system. Token required in Authorization header.
+## Endpoint: /user/book/read
+
+## Method: GET
+
+Request Payload
+```bash
+{
+  "token": "new_jwt_token_here",
+
+}
+```
+Response:
+```bash
+{
+  "status": "success",
+  "data": [
+    {
+      "id": 1,
+      "title": "Book Title",
+      "authorid": 1
+    },
+    {
+      "id": 2,
+      "title": "Another Book Title",
+      "authorid": 2
+    }
+  ]
+}
+
+```
+### Update book
+## Endpoint: (/user/book/update)
+## Method: PUT
+
+Request Payload:
+```bash
+{
+  "id": "1",  
+  "title": "Invictus",       
+  "token": "jwt_token_here"       
+}
+```
+
+Response:
+```bash
+{
+  "status": "success",
+  "token": "new_jwt_token_here",  
+  "data": null
+}
+
+```
+## Get Book
+## Endpoint: (/user/book/read/{id})
+## Method: GET
+
+Request Payload:
+```bash
+{
+  "token": "new_jwt_token_here",  
+}
+
+```
+Response:
+```bash
+{
+  "status": "success",
+  "data": {
+    "id": 1,
+    "title": "Invictus",
+    "authorid": 1
+  },
+  "token": "new_jwt_token_here" 
+}
+```
+
+
 
 
 

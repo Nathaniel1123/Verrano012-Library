@@ -120,8 +120,6 @@ Response:
 
 ## Method: DELETE
 
-## Description: Deletes an existing author. Token required for authentication.
-
 Request Payload:
 
 ```bash
@@ -144,8 +142,6 @@ Response:
 
 ## Method: POST
 
-## Description: Creates a new book and associates it with an author. Token required for authentication.
-
 ## Request Payload:
 ```bash
 {
@@ -165,7 +161,6 @@ Response:
 ```
 ### Read All Books
 
-## Description: Retrieves all books in the system. Token required in Authorization header.
 ## Endpoint: /user/book/read
 
 ## Method: GET

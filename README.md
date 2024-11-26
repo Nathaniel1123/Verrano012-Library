@@ -225,7 +225,7 @@ Response:
 Request Payload:
 ```bash
 {
-  "token": "new_jwt_token_here",  
+  "token": "jwt_token_here",  
 }
 
 ```
